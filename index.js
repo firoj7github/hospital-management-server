@@ -19,6 +19,16 @@ function verifyJWT(req, res, next){
   if(!authHeader){
     return res.status('401').send({message:'unauthorized access'});
   }
+  const token= authHeader.split(' ')[1];
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRATE, function(err, decoded) {
+    if(err){
+      return res.status('403').send({message:'forbidden access'});
+
+    }
+    req.decoded=decoded;
+    next();
+  });
+  
 };
 
 async function run(){
@@ -29,6 +39,17 @@ async function run(){
        const bookingCollection=client.db('hospital_management').collection('bookings');
        const userCollection=client.db('hospital_management').collection('users');
 
+       app.put('/user/admin/:email', async(req,res)=>{
+        const email= req.params.email;
+        const filter={email: email};
+        const updateDoc={
+          $set:{role:'admin'}
+        };
+        const result= await userCollection.updateOne(filter, updateDoc);
+        
+        res.send(result); 
+
+       })
        app.put('/user/:email', async(req,res)=>{
         const email= req.params.email;
         const user = req.body;
@@ -48,17 +69,32 @@ async function run(){
         res.send(services);
        })
 
+      //  found admin
+       app.get('/admin/:email', async(req,res)=>{
+        const email= req.params.email;
+        const user= await userCollection.findOne({email:email});
+        const isAdmin= user.role==='admin';
+        res.send({admin: isAdmin});
+       })
+
       //  get fixed email appionment
 
-      app.get('/booking',verifyJWT, async(req,res)=>{
+      app.get('/booking', async(req,res)=>{
         // const patientEmail=req.query.patientEmail;
         // const query= {patientEmail: patientEmail};
         // const authorization= req.headers.authorization;
-        console.log(authorization);
+        
         const query={}
         const cursor = bookingCollection.find(query);
         const bookings = await cursor.toArray();
         res.send(bookings);
+       
+      })
+      app.get('/users', async(req,res)=>{
+        const query={}
+        const cursor = userCollection.find(query);
+        const users = await cursor.toArray();
+        res.send(users);
        
       })
 
