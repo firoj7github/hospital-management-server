@@ -83,22 +83,7 @@ async function run(){
         res.json({ error, status });
       });
 
-      //  payment api
-
-      // app.post('/cash',verifyJWT, async(req,res)=>{
-      //   const {price}= req.body;
-        
-      //   const amount = price*100;
-      //   console.log(amount);
-      //   const paymentIntent = await stripe.paymentIntents.create({
-      //     amount: amount,
-      //     currency: 'usd',
-      //     payment_method_types: ['card'],
-      //     });
-          
-      //     res.send({clientSecret: paymentIntent.client_secret
-      //     });
-      // })
+     
      
       
 
