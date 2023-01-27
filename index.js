@@ -103,12 +103,10 @@ async function run(){
        })
 
       //  get fixed email appionment
-
         app.get('/booking', async(req,res)=>{
         // const patientEmail=req.query.patientEmail;
         // const query= {patientEmail: patientEmail};
         // const authorization= req.headers.authorization;
-        
         const query={}
         const cursor = bookingCollection.find(query);
         const bookings = await cursor.toArray();
