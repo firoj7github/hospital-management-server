@@ -104,7 +104,7 @@ async function run(){
 
       //  get fixed email appionment
 
-      app.get('/booking', async(req,res)=>{
+        app.get('/booking', async(req,res)=>{
         // const patientEmail=req.query.patientEmail;
         // const query= {patientEmail: patientEmail};
         // const authorization= req.headers.authorization;
@@ -140,7 +140,7 @@ async function run(){
         return res.send({success:false})
       }
       const result = await bookingCollection.insertOne(booking);
-      res.send({success:true, result});
+       res.send({success:true, result});
   
     })
   }
@@ -149,8 +149,6 @@ async function run(){
   }
 }
 run().catch(console.dir);
-
-
 
 
 app.get('/', (req, res) => {
