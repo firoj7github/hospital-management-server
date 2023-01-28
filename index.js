@@ -37,7 +37,7 @@ function verifyJWT(req, res, next){
 
 async function run(){
   try{
-       await client.connect();
+        client.connect();
        console.log('database connected');
        const serviceCollection=client.db('hospital_management').collection('services');
        const bookingCollection=client.db('hospital_management').collection('bookings');
